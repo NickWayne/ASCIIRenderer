@@ -15,14 +15,14 @@ namespace AsciiRenderer
             Console.BackgroundColor = ConsoleColor.Green;
             Console.ForegroundColor = ConsoleColor.Black;
 
-            var physicsSettings = new PhysicsSettings(true, false, false);
+            var physicsSettings = new PhysicsSettings(false, false, false);
 
             var display = new Display(width, height, physicsSettings)
             {
                 IsBackgroundBlack = true
             };
             display.CreateCellsBoard();
-            display.CreateShapes(10, 3, 2, 10);
+            display.CreateShapes(10, 3, 1, 10);
 
             while (true)
             {
