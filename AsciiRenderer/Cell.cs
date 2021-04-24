@@ -21,7 +21,7 @@ namespace AsciiRenderer
 
         public char GetCharacter(bool isBackgroundBlack)
         {
-            string characters = " ░▒▓";
+            string characters = " ░▒▓█";
             //string characters = " ■"; /*Dotted */
             //string characters = " █"; /*Solid*/
             //string characters = " .'`^\",:; Il!i >< ~+_ -?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
