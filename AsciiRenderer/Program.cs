@@ -9,10 +9,10 @@ namespace AsciiRenderer
         {
             Console.CursorVisible = false;
             Console.OutputEncoding = System.Text.Encoding.UTF8;
-            var height = Console.WindowHeight;
-            var width = Console.WindowWidth;
-            Console.WindowHeight +=  1;
-            Console.WindowWidth +=  1;
+            var height = 50;
+            var width = 80;
+            Console.WindowHeight = height + 1;
+            Console.WindowWidth =  width + 1;
             //Console.BackgroundColor = ConsoleColor.Green;
             //Console.ForegroundColor = ConsoleColor.Black;
 
@@ -20,10 +20,10 @@ namespace AsciiRenderer
 
             var display = new Display(width, height, physicsSettings)
             {
-                IsBackgroundInverted = true
+                IsBackgroundInverted = false
             };
             display.CreateCellsBoard();
-            display.CreateShapes(20, 5, 1, 10);
+            display.CreateShapes(10, 5, 1, 1);
 
             while (true)
             {

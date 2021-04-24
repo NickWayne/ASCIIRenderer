@@ -10,8 +10,6 @@ namespace AsciiRenderer
         public List<Shape> Shapes = new();
         public int Width;
         public int Height;
-        public int CellWidth = 8;
-        public int CellHeight = 8;
         public bool IsBackgroundInverted = true;
         public PhysicsSettings physicsSettings;
 
@@ -41,7 +39,7 @@ namespace AsciiRenderer
             var rand = new Random();
             for (int i = 0; i < number; i++)
             {
-                var circle = new Circle(rand.Next((int) (Width - sizeMax)), rand.Next((int)(Height - sizeMax)), rand.NextDouble() * sizeMax + .5, rand.NextDouble() * massMax, physicsSettings)
+                var circle = new Circle(rand.Next((int) (Width - sizeMax)), rand.Next((int)(Height - sizeMax)), Math.Min(rand.NextDouble() * sizeMax + 2, sizeMax), rand.NextDouble() * massMax, physicsSettings)
                 {
                     velocityX = rand.NextDouble() * velocityMax,
                     velocityY = rand.NextDouble() * velocityMax
@@ -69,7 +67,7 @@ namespace AsciiRenderer
             {
                 foreach (var cell in cellRow)
                 {
-                    cell.CharacterWeight = Shapes.Max(shape => shape.ShapeOverlapAmount(cell.X, cell.Y, CellWidth, CellHeight));
+                    cell.CharacterWeight = Shapes.Max(shape => shape.ShapeOverlapAmount(cell.X, cell.Y));
                 }
             }
         }

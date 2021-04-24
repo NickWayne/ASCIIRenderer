@@ -25,8 +25,9 @@ namespace AsciiRenderer
         {
             //string characters = " ■"; /*Dotted */
             //string characters = " █"; /*Solid*/
+            string characters = " .`'\"#░▒▓█"; /*Solid*/
             //string characters = " .'`^\",:; Il!i >< ~+_ -?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
-            string characters = " .:-=+*#%█";
+            //string characters = " .:-=+*#%█";
             double charWeight = CharacterWeight;
             if (isBackgroundBlack)
             {

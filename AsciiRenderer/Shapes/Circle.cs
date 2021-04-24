@@ -19,9 +19,12 @@ namespace AsciiRenderer
             y += velocityY;
             foreach (var shape in shapes)
             {
-                if (shape != this && physics.ShapeCollision)
+                if (shape != this)
                 {
-                    IsIntersectingShape(shape);
+                    if (physics.ShapeCollision)
+                    {
+                        IsIntersectingShape(shape);
+                    }
                 }
             }
             BounceOffWalls(width, height);
@@ -49,9 +52,11 @@ namespace AsciiRenderer
             return (cellX - x) * (cellX - x) + (cellY - y) * (cellY - y) <= radius * radius;
         }
 
-        public override double ShapeOverlapAmount(int cellX, int cellY, int cellWidth, int cellHeight)
+        public override double ShapeOverlapAmount(int cellX, int cellY)
         {
             var countOverlap = 0;
+            int cellWidth = 10;
+            int cellHeight = 10;
             double distance = Math.Pow(cellX - x, 2) + Math.Pow(cellY - y, 2);
             if (distance < Math.Pow(radius, 2))
             {
@@ -71,11 +76,6 @@ namespace AsciiRenderer
             }
             double overlapPercentage = (double)countOverlap / (cellWidth * cellHeight);
             return overlapPercentage;
-            //var dist = Math.Sqrt((cellX - x) * (cellX - x) + (cellY - y) * (cellY - y));
-            //var v = dist - (radius - 1); // Normalize range
-            //if (v < 0) return 1.0; // Completely inside
-            //if (v > 2) return 0.0; // Since 1 + 1 = 2 if v is greater than 2 it is be completely outside
-            //return 1 - (v / 2);
         }
 
         public override bool IsIntersectingShape(Shape shape)
@@ -93,10 +93,10 @@ namespace AsciiRenderer
         {
             if (((circle.x - x) * (circle.x - x) + (circle.y - y) * (circle.y - y)) <= (radius + circle.radius) * (radius + circle.radius))
             {
-                velocityX = (velocityX * (mass - circle.mass) + (2 * circle.mass * circle.velocityX)) / (mass + circle.mass);
-                velocityY = (velocityY * (mass - circle.mass) + (2 * circle.mass * circle.velocityY)) / (mass + circle.mass);
-                circle.velocityX = (circle.velocityX * (circle.mass - mass) + (2 * mass * velocityX)) / (mass + circle.mass);
-                circle.velocityY = (circle.velocityY * (circle.mass - mass) + (2 * mass * velocityY)) / (mass + circle.mass);
+                velocityX = (velocityX * (mass - circle.mass) +(2 * circle.mass * circle.velocityX)) / (mass + circle.mass);
+                velocityY = (velocityY * (mass - circle.mass) +(2 * circle.mass * circle.velocityY)) / (mass + circle.mass);
+                circle.velocityX = (circle.velocityX * (circle.mass - mass) +(2 * mass * velocityX)) / (mass + circle.mass);
+                circle.velocityY = (circle.velocityY * (circle.mass - mass) +(2 * mass * velocityY)) / (mass + circle.mass);
                 x += velocityX;
                 y += velocityY;
                 circle.x += circle.velocityX;

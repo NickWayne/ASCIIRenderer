@@ -25,7 +25,7 @@ namespace AsciiRenderer
         public abstract bool IsIntersectingCell(int cellX, int cellY);
         public abstract bool IsIntersectingShape(Shape shape);
 
-        public abstract double ShapeOverlapAmount(int cellX, int cellY, int cellWidth, int cellHeight);
+        public abstract double ShapeOverlapAmount(int cellX, int cellY);
 
     }
 }
