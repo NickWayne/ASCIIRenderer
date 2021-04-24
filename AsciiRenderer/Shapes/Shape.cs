@@ -11,7 +11,7 @@ namespace AsciiRenderer
         public double mass = 1;
         public PhysicsSettings physics;
 
-        public Shape(int x, int y, double mass, PhysicsSettings physics)
+        public Shape(double x, double y, double mass, PhysicsSettings physics)
         {
             this.x = x;
             this.y = y;
@@ -25,7 +25,7 @@ namespace AsciiRenderer
         public abstract bool IsIntersectingCell(int cellX, int cellY);
         public abstract bool IsIntersectingShape(Shape shape);
 
-        public abstract double ShapeOverlapAmount(int cellX, int cellY);
+        public abstract double ShapeOverlapAmount(int cellX, int cellY, int cellWidth, int cellHeight);
 
     }
 }

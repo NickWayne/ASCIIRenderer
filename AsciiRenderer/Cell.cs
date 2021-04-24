@@ -7,6 +7,8 @@ namespace AsciiRenderer
         public int X { get; set; }
 
         public int Y { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
 
         public char Character { get; set; }
 
@@ -21,11 +23,11 @@ namespace AsciiRenderer
 
         public char GetCharacter(bool isBackgroundBlack)
         {
-            string characters = " ░▒▓█";
+            //string characters = " ░▒▓█";
             //string characters = " ■"; /*Dotted */
             //string characters = " █"; /*Solid*/
-            //string characters = " .'`^\",:; Il!i >< ~+_ -?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
-            //string characters = " .:-=+*#%@";
+            string characters = " .'`^\",:; Il!i >< ~+_ -?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
+            //string characters = " .:-=+*#%█";
             double charWeight = CharacterWeight;
             if (isBackgroundBlack)
             {

@@ -22,7 +22,7 @@ namespace AsciiRenderer
                 IsBackgroundInverted = false
             };
             display.CreateCellsBoard();
-            display.CreateShapes(10, 5, 1, 10);
+            display.CreateShapes(5, 5, 1, 10);
 
             while (true)
             {
@@ -40,7 +40,7 @@ namespace AsciiRenderer
         public static void GameLoop(Display display)
         {
             display.RenderBoard();
-            Thread.Sleep(40);
+            Thread.Sleep(10);
             display.UpdateBoard();
         }
     }

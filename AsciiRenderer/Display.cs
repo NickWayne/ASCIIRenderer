@@ -10,6 +10,8 @@ namespace AsciiRenderer
         public List<Shape> Shapes = new();
         public int Width;
         public int Height;
+        public int CellWidth = 8;
+        public int CellHeight = 8;
         public bool IsBackgroundInverted = true;
         public PhysicsSettings physicsSettings;
 
@@ -67,7 +69,7 @@ namespace AsciiRenderer
             {
                 foreach (var cell in cellRow)
                 {
-                    cell.CharacterWeight = Shapes.Max(shape => shape.ShapeOverlapAmount(cell.X, cell.Y));
+                    cell.CharacterWeight = Shapes.Max(shape => shape.ShapeOverlapAmount(cell.X, cell.Y, CellWidth, CellHeight));
                 }
             }
         }

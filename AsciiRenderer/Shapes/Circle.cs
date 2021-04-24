@@ -7,7 +7,7 @@ namespace AsciiRenderer
     {
         public double radius;
 
-        public Circle(int x, int y, double radius, double mass, PhysicsSettings physics) : base(x, y, mass, physics)
+        public Circle(double x, double y, double radius, double mass, PhysicsSettings physics) : base(x, y, mass, physics)
         {
             this.radius = radius;
         }
@@ -49,13 +49,33 @@ namespace AsciiRenderer
             return (cellX - x) * (cellX - x) + (cellY - y) * (cellY - y) <= radius * radius;
         }
 
-        public override double ShapeOverlapAmount(int cellX, int cellY)
+        public override double ShapeOverlapAmount(int cellX, int cellY, int cellWidth, int cellHeight)
         {
-            var dist = Math.Sqrt((cellX - x) * (cellX - x) + (cellY - y) * (cellY - y));
-            var v = dist - (radius - 1); // Normalize range
-            if (v < 0) return 1.0; // Completely inside
-            if (v > 2) return 0.0; // Since 1 + 1 = 2 if v is greater than 2 it is be completely outside
-            return 1 - (v / 2);
+            var countOverlap = 0;
+            double distance = Math.Pow(cellX - x, 2) + Math.Pow(cellY - y, 2);
+            if (distance < Math.Pow(radius, 2))
+            {
+                for (double w = -cellWidth / 2; w < cellWidth / 2; w++)
+                {
+                    for (double h = -cellHeight / 2; h < cellHeight / 2; h++)
+                    {
+                        if (w == 0 || h == 0) distance = Math.Pow(cellX - x, 2) + Math.Pow(cellY - y, 2);
+                        else distance = Math.Pow((cellX - x) + 1.0 / w, 2) + Math.Pow((cellY - y) + 1.0 / h, 2);
+
+                        if (distance < Math.Pow(radius, 2))// Inside circle
+                        {
+                            countOverlap += 1;
+                        }
+                    }
+                }
+            }
+            double overlapPercentage = (double)countOverlap / (cellWidth * cellHeight);
+            return overlapPercentage;
+            //var dist = Math.Sqrt((cellX - x) * (cellX - x) + (cellY - y) * (cellY - y));
+            //var v = dist - (radius - 1); // Normalize range
+            //if (v < 0) return 1.0; // Completely inside
+            //if (v > 2) return 0.0; // Since 1 + 1 = 2 if v is greater than 2 it is be completely outside
+            //return 1 - (v / 2);
         }
 
         public override bool IsIntersectingShape(Shape shape)
