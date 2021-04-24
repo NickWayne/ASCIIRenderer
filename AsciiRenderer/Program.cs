@@ -19,7 +19,7 @@ namespace AsciiRenderer
 
             var display = new Display(width, height, physicsSettings)
             {
-                IsBackgroundBlack = true
+                IsBackgroundInverted = true
             };
             display.CreateCellsBoard();
             display.CreateShapes(10, 3, 1, 10);

@@ -10,7 +10,7 @@ namespace AsciiRenderer
         public List<Shape> Shapes = new();
         public int Width;
         public int Height;
-        public bool IsBackgroundBlack = true;
+        public bool IsBackgroundInverted = true;
         public PhysicsSettings physicsSettings;
 
         public Display(int width, int height, PhysicsSettings physics)
@@ -81,7 +81,7 @@ namespace AsciiRenderer
 
         public string ReadRow(List<Cell> cellRow)
         {
-            return new string(cellRow.Select(cell => cell.GetCharacter(IsBackgroundBlack)).ToArray());
+            return new string(cellRow.Select(cell => cell.GetCharacter(IsBackgroundInverted)).ToArray());
         }
     }
 }
