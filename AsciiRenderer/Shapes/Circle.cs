@@ -30,16 +30,16 @@ namespace AsciiRenderer
         public override void BounceOffWalls(int width, int height) 
         {
             // Hitting left or right wall
-            if (x <= 0 || x >= width)
+            if (x - radius <= 0 || x + radius >= width)
             {
-                x = x < 0 ? radius : width - radius;
+                x = x - radius < 0 ? radius : width - radius;
                 velocityX = -velocityX;
             }
 
             // Hitting top or bottom wall
-            if (y <= 0 || y >= height)
+            if (y - radius <= 0 || y + radius >= height)
             {
-                y = y < 0 ? radius : height - radius;
+                y = y - radius < 0 ? radius : height - radius;
                 velocityY = -velocityY;
             }
         }

@@ -12,24 +12,26 @@ namespace AsciiRenderer
             var width = Console.WindowWidth;
             Console.WindowHeight +=  1;
             Console.WindowWidth +=  1;
-            Console.BackgroundColor = ConsoleColor.Green;
-            Console.ForegroundColor = ConsoleColor.Black;
+            //Console.BackgroundColor = ConsoleColor.Green;
+            //Console.ForegroundColor = ConsoleColor.Black;
 
             var physicsSettings = new PhysicsSettings(false, false, false);
 
             var display = new Display(width, height, physicsSettings)
             {
-                IsBackgroundInverted = true
+                IsBackgroundInverted = false
             };
             display.CreateCellsBoard();
-            display.CreateShapes(10, 3, 1, 10);
+            display.CreateShapes(10, 5, 1, 10);
 
             while (true)
             {
                 GameLoop(display);
                 if (display.Height != Console.WindowHeight - 1 || display.Width != Console.WindowWidth - 1)
                 {
-                    display.UpdateDimmensions(Console.WindowWidth, Console.WindowHeight);
+                    Console.Clear();
+                    Console.SetCursorPosition(0, 0);
+                    display.UpdateDimmensions(Console.WindowWidth - 1, Console.WindowHeight - 1);
                     display.CreateCellsBoard();
                 }
             }
