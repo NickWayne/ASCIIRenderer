@@ -63,6 +63,7 @@ namespace AsciiRenderer
                     //velocityY = -velocityY;
 
                     //TODO: Update IShape to Shape parent class
+                    // Change velocity to a vector
                     Circle cast = shape as Circle;
                     if (cast != null)
                     {
@@ -70,8 +71,6 @@ namespace AsciiRenderer
                         velocityY = (velocityY * (mass - cast.mass) + (2 * cast.mass * cast.velocityY)) / (mass + cast.mass);
                         cast.velocityX = (cast.velocityX * (cast.mass - mass) +(2 * mass * velocityX)) / (mass + cast.mass);
                         cast.velocityY = (cast.velocityY * (cast.mass - mass) +(2 * mass * velocityY)) / (mass + cast.mass);
-                        x += velocityX;
-                        y += velocityY;
                     }
 
                 }

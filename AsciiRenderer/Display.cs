@@ -28,7 +28,7 @@ namespace AsciiRenderer
                 var cellRow = new List<Cell>();
                 for (int x = 0; x < Width; x++)
                 {
-                    cellRow.Add(new Cell(x, y, 'a'));
+                    cellRow.Add(new Cell(x, y, 'E'));
                 }
                 Cells.Add(cellRow);
             }
@@ -39,7 +39,7 @@ namespace AsciiRenderer
             var rand = new Random();
             for (int i = 0; i < number; i++)
             {
-                var circle = new Circle(Width, Height, rand.Next(100), rand.Next(100), rand.Next(2, 5), rand.Next(2, 5))
+                var circle = new Circle(Width, Height, rand.Next(100), rand.Next(100), rand.Next(2, 5), rand.NextDouble() * 5)
                 {
                     velocityX = rand.NextDouble() * velocityMax,
                     velocityY = rand.NextDouble() * velocityMax
