@@ -28,21 +28,21 @@ namespace AsciiRenderer
                 var cellRow = new List<Cell>();
                 for (int x = 0; x < Width; x++)
                 {
-                    cellRow.Add(new Cell(x, y, (char)rand.Next('a', 'z')));
+                    cellRow.Add(new Cell(x, y, 'a'));
                 }
                 Cells.Add(cellRow);
             }
         }
 
-        public void CreateShapes(int number)
+        public void CreateShapes(int number, double velocityMax)
         {
             var rand = new Random();
             for (int i = 0; i < number; i++)
             {
-                var circle = new Circle(Width, Height, rand.Next(100), rand.Next(100), 5)
+                var circle = new Circle(Width, Height, rand.Next(100), rand.Next(100), rand.Next(2, 5), rand.Next(2, 5))
                 {
-                    velocityX = GenerateVelocity(3),
-                    velocityY = GenerateVelocity(1)
+                    velocityX = rand.NextDouble() * velocityMax,
+                    velocityY = rand.NextDouble() * velocityMax
                 };
                 shapes.Add(circle);
             }
@@ -63,7 +63,10 @@ namespace AsciiRenderer
         {
             foreach (var shape in shapes)
             {
-                shape.Update();
+                Circle shapeAsCircle = shape as Circle;
+                if (shapeAsCircle != null) {
+                    shapeAsCircle.UpdateFriendlyFire(shapes);
+                }
             }
 
             foreach(var cellRow in Cells)
@@ -75,9 +78,19 @@ namespace AsciiRenderer
             }
         }
 
-        public static string ReadRow(List<Cell> cellRow)
+        public void UpdateDimmensions(int width, int height)
         {
-            return new string(cellRow.Select(cell => cell.getValue()).ToArray());
+            Width = width;
+            Height = height;
+            foreach (var shape in shapes)
+            {
+                shape.UpdateDimmensions(width, height);
+            }
+        }
+
+        public string ReadRow(List<Cell> cellRow)
+        {
+            return new string(cellRow.Select(cell => cell.getValue(IsBackgroundBlack)).ToArray());
         }
 
         public static double GenerateVelocity(double max)

@@ -16,9 +16,9 @@ namespace AsciiRenderer
             Value = value;
             ToDisplay = true;
         }
-        public char getValue()
+        public char getValue(bool IsBackgroundBlack)
         {
-            return ToDisplay ? Value : ' ';
+            return ToDisplay ^ IsBackgroundBlack ? Value : ' ';
         }
     }
 }
