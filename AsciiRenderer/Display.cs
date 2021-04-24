@@ -74,6 +74,7 @@ namespace AsciiRenderer
                 foreach (var cell in cellRow)
                 {
                     cell.ToDisplay = shapes.Where(shape => shape.IsIntersecting(cell.X, cell.Y)).Any();
+                    cell.characterWeight = shapes.Average(shape => shape.ShapeOverlap(cell.X, cell.Y)) * 3;
                 }
             }
         }

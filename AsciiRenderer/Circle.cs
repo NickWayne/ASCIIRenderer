@@ -105,6 +105,17 @@ namespace AsciiRenderer
             return (cellX - x) * (cellX - x) + (cellY - y) * (cellY - y) <= radius * radius;
         }
 
+        public double ShapeOverlap(int cellX, int cellY)
+        {
+            var dist = Math.Sqrt((cellX - x) * (cellX - x) + (cellY - y) * (cellY - y));
+            var radSqp = (radius + 1);
+            var radSqm = (radius - 1);
+            if (dist < radSqp) return 1.0;
+            if (dist > radSqm) return 0.0;
+            var ret = (dist - radSqm) / (radSqp - radSqm);
+            return ret;
+        }
+
         public bool IsIntersectingCircle(IShape circle2)
         {
             double slop = 1;

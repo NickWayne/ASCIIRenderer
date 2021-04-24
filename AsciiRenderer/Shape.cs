@@ -6,5 +6,6 @@
         void Update();
         void UpdateDimmensions(int width, int height);
         bool IsIntersectingCircle(IShape circle2);
+        double ShapeOverlap(int cellX, int cellY);
     }
 }

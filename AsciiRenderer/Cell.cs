@@ -8,6 +8,7 @@ namespace AsciiRenderer
         public int Y;
         public char Value;
         public bool ToDisplay;
+        public double characterWeight;
 
         public Cell(int x, int y, char value)
         {
@@ -15,10 +16,13 @@ namespace AsciiRenderer
             Y = y;
             Value = value;
             ToDisplay = true;
+            characterWeight = 0;
         }
         public char getValue(bool IsBackgroundBlack)
         {
-            return ToDisplay ^ IsBackgroundBlack ? Value : ' ';
+            string characters = " .:-=+*#%@";
+            int index = Math.Clamp((int) (characterWeight * (characters.Length - 1)), 0, characters.Length - 1);
+            return ToDisplay ^ IsBackgroundBlack ? characters[index] : ' ';
         }
     }
 }
