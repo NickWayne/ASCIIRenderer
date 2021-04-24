@@ -8,6 +8,7 @@ namespace AsciiRenderer
         static void Main(string[] args)
         {
             Console.CursorVisible = false;
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             var height = Console.WindowHeight;
             var width = Console.WindowWidth;
             Console.WindowHeight +=  1;
@@ -19,10 +20,10 @@ namespace AsciiRenderer
 
             var display = new Display(width, height, physicsSettings)
             {
-                IsBackgroundInverted = false
+                IsBackgroundInverted = true
             };
             display.CreateCellsBoard();
-            display.CreateShapes(5, 5, 1, 10);
+            display.CreateShapes(20, 5, 1, 10);
 
             while (true)
             {
