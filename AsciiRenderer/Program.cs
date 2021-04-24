@@ -7,22 +7,22 @@ namespace AsciiRenderer
     {
         static void Main(string[] args)
         {
-            //var height = Console.WindowHeight - 1;
-            //var width = Console.WindowWidth - 1;
-
-            var height = 56;
-            var width = 186;
-            Console.WindowHeight = height;
-            Console.WindowWidth = width;
+            Console.CursorVisible = false;
+            var height = Console.WindowHeight;
+            var width = Console.WindowWidth;
+            Console.WindowHeight +=  1;
+            Console.WindowWidth +=  1;
             Console.BackgroundColor = ConsoleColor.Green;
             Console.ForegroundColor = ConsoleColor.Black;
 
-            var display = new Display(width, height)
+            var physicsSettings = new PhysicsSettings(true, false, false);
+
+            var display = new Display(width, height, physicsSettings)
             {
-                IsBackgroundBlack = false
+                IsBackgroundBlack = true
             };
             display.CreateCellsBoard();
-            display.CreateShapes(15, 2);
+            display.CreateShapes(10, 3, 2, 10);
 
             while (true)
             {

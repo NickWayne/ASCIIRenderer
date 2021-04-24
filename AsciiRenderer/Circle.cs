@@ -3,126 +3,85 @@ using System.Collections.Generic;
 
 namespace AsciiRenderer
 {
-    public class Circle : IShape
+    public class Circle : Shape
     {
-        public double x;
-        public double y;
-        public int width;
-        public int height;
-        public double velocityX;
-        public double velocityY;
-        public int radius;
-        public double mass;
+        public double radius;
 
-        public Circle(int width, int height, int x, int y, int radius, double mass)
+        public Circle(int x, int y, double radius, double mass, PhysicsSettings physics) : base(x, y, mass, physics)
         {
-            this.width = width;
-            this.height = height;
-            this.x = x;
-            this.y = y;
             this.radius = radius;
-            this.mass = mass;
         }
 
-        public void Update()
+        public override void Update(List<Shape> shapes, int width, int height)
         {
-            bool toReturn = false;
-            if (Math.Floor(x + velocityX - radius) < 0 || Math.Floor(x + velocityX + radius) > width)
-            {
-                x = (Math.Floor(x + velocityX - radius) < 0) ? radius : width - radius;
-                velocityX = -velocityX;
-                toReturn = true;
-            }
-            if (Math.Floor(y + velocityY - radius) < 0 || Math.Floor(y + velocityY + radius) > height)
-            {
-                y = (Math.Floor(y + velocityY - radius) < 0) ? radius : height - radius;
-                velocityY = -velocityY;
-                toReturn = true;
-            }
-            if (toReturn)
-            {
-                return;
-            }
-            else
-            {
-                x += velocityX;
-                y += velocityY;
-            }
-        }
-
-        public void UpdateFriendlyFire(List<IShape> shapes)
-        {
+            // Add Velocity
             x += velocityX;
             y += velocityY;
             foreach (var shape in shapes)
             {
-                
-                if (IsIntersectingCircle(shape) && shape != this)
+                if (shape != this && physics.ShapeCollision)
                 {
-                    //velocityX = -velocityX;
-                    //velocityY = -velocityY;
-
-                    //TODO: Update IShape to Shape parent class
-                    // Change velocity to a vector
-                    Circle cast = shape as Circle;
-                    if (cast != null)
-                    {
-                        velocityX = (velocityX * (mass - cast.mass) + (2 * cast.mass * cast.velocityX)) / (mass + cast.mass);
-                        velocityY = (velocityY * (mass - cast.mass) + (2 * cast.mass * cast.velocityY)) / (mass + cast.mass);
-                        cast.velocityX = (cast.velocityX * (cast.mass - mass) +(2 * mass * velocityX)) / (mass + cast.mass);
-                        cast.velocityY = (cast.velocityY * (cast.mass - mass) +(2 * mass * velocityY)) / (mass + cast.mass);
-                    }
-
+                    IsIntersectingShape(shape);
                 }
-               
             }
+            BounceOffWalls(width, height);
+        }
+
+        public override void BounceOffWalls(int width, int height) 
+        {
+            // Hitting left or right wall
             if (x < 0 || x > width)
             {
                 x = x < 0 ? radius : width - radius;
                 velocityX = -velocityX;
             }
+
+            // Hitting top or bottom wall
             if (y < 0 || y > height)
             {
                 y = y < 0 ? radius : height - radius;
                 velocityY = -velocityY;
             }
-
         }
 
-        public bool isIntersectingWalls() {
-
-            return false;
-        }
-
-        public void UpdateDimmensions(int width, int height)
-        {
-            this.width = width;
-            this.height = height;
-        }
-
-        public bool IsIntersecting(int cellX, int cellY)
+        public override bool IsIntersectingCell(int cellX, int cellY)
         {
             return (cellX - x) * (cellX - x) + (cellY - y) * (cellY - y) <= radius * radius;
         }
 
-        public double ShapeOverlap(int cellX, int cellY)
+        public override double ShapeOverlapAmount(int cellX, int cellY)
         {
             var dist = Math.Sqrt((cellX - x) * (cellX - x) + (cellY - y) * (cellY - y));
-            var radSqp = (radius + 1);
-            var radSqm = (radius - 1);
-            if (dist < radSqp) return 1.0;
-            if (dist > radSqm) return 0.0;
-            var ret = (dist - radSqm) / (radSqp - radSqm);
-            return ret;
+            var v = dist - (radius - 1); // Normalize range
+            if (v < 0) return 1.0; // Completely inside
+            if (v > 2) return 0.0; // Since 1 + 1 = 2 if v is greater than 2 it is be completely outside
+            return 1 - (v / 2);
         }
 
-        public bool IsIntersectingCircle(IShape circle2)
+        public override bool IsIntersectingShape(Shape shape)
         {
-            double slop = 1;
-            Circle cast = circle2 as Circle;
-            if (cast != null)
+            return shape switch
             {
-                return ((cast.x - x) * (cast.x - x) + (cast.y - y) * (cast.y - y)) + slop <= (radius + cast.radius) * (radius + cast.radius);
+                Circle s => IsIntersectingCircle(s),
+                _ => throw new ArgumentException(
+                          message: "shape is not a recognized shape",
+                          paramName: nameof(shape)),
+            };
+        }
+
+        public bool IsIntersectingCircle(Circle circle)
+        {
+            if (((circle.x - x) * (circle.x - x) + (circle.y - y) * (circle.y - y)) <= (radius + circle.radius) * (radius + circle.radius))
+            {
+                velocityX = (velocityX * (mass - circle.mass) + (2 * circle.mass * circle.velocityX)) / (mass + circle.mass);
+                velocityY = (velocityY * (mass - circle.mass) + (2 * circle.mass * circle.velocityY)) / (mass + circle.mass);
+                circle.velocityX = (circle.velocityX * (circle.mass - mass) + (2 * mass * velocityX)) / (mass + circle.mass);
+                circle.velocityY = (circle.velocityY * (circle.mass - mass) + (2 * mass * velocityY)) / (mass + circle.mass);
+                x += velocityX;
+                y += velocityY;
+                circle.x += circle.velocityX;
+                circle.y += circle.velocityY;
+                return true;
             }
             return false;
         }

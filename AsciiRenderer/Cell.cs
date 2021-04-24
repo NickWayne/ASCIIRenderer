@@ -4,25 +4,33 @@ namespace AsciiRenderer
 {
     public class Cell
     {
-        public int X;
-        public int Y;
-        public char Value;
-        public bool ToDisplay;
-        public double characterWeight;
+        public int X { get; set; }
 
-        public Cell(int x, int y, char value)
+        public int Y { get; set; }
+
+        public char Character { get; set; }
+
+
+        public double CharacterWeight { get; set; }
+
+        public Cell(int x, int y)
         {
             X = x;
             Y = y;
-            Value = value;
-            ToDisplay = true;
-            characterWeight = 0;
         }
-        public char getValue(bool IsBackgroundBlack)
+
+        public char GetCharacter(bool isBackgroundBlack)
         {
-            string characters = " .:-=+*#%@";
-            int index = Math.Clamp((int) (characterWeight * (characters.Length - 1)), 0, characters.Length - 1);
-            return ToDisplay ^ IsBackgroundBlack ? characters[index] : ' ';
+            string characters = " █";
+            //string characters = " .'`^\",:; Il!i >< ~+_ -?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
+            //string characters = " .:-=+*#%@";
+            double charWeight = CharacterWeight;
+            if (isBackgroundBlack)
+            {
+                charWeight = 1 - charWeight;
+            }
+            int index = Math.Clamp((int) (charWeight * (characters.Length - 1)), 0, characters.Length - 1);
+            return characters[index];
         }
     }
 }

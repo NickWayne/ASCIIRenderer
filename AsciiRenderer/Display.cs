@@ -7,44 +7,44 @@ namespace AsciiRenderer
     public class Display
     {
         public List<List<Cell>> Cells;
-        public List<IShape> shapes = new List<IShape>();
+        public List<Shape> Shapes = new();
         public int Width;
         public int Height;
         public bool IsBackgroundBlack = true;
+        public PhysicsSettings physicsSettings;
 
-        public Display(int width, int height)
+        public Display(int width, int height, PhysicsSettings physics)
         {
             Width = width;
             Height = height;
-            Console.CursorVisible = false;
+            physicsSettings = physics;
         }
 
         public void CreateCellsBoard()
         {
             Cells = new List<List<Cell>>();
-            var rand = new Random();
             for (int y = 0; y < Height; y++)
             {
                 var cellRow = new List<Cell>();
                 for (int x = 0; x < Width; x++)
                 {
-                    cellRow.Add(new Cell(x, y, 'E'));
+                    cellRow.Add(new Cell(x, y));
                 }
                 Cells.Add(cellRow);
             }
         }
 
-        public void CreateShapes(int number, double velocityMax)
+        public void CreateShapes(int number, double sizeMax, double velocityMax, double massMax)
         {
             var rand = new Random();
             for (int i = 0; i < number; i++)
             {
-                var circle = new Circle(Width, Height, rand.Next(100), rand.Next(100), rand.Next(2, 5), rand.NextDouble() * 5)
+                var circle = new Circle(rand.Next((int) (Width - sizeMax)), rand.Next((int)(Height - sizeMax)), rand.NextDouble() * sizeMax + .5, rand.NextDouble() * massMax, physicsSettings)
                 {
                     velocityX = rand.NextDouble() * velocityMax,
                     velocityY = rand.NextDouble() * velocityMax
                 };
-                shapes.Add(circle);
+                Shapes.Add(circle);
             }
            
         }
@@ -61,20 +61,13 @@ namespace AsciiRenderer
 
         public void UpdateBoard()
         {
-            foreach (var shape in shapes)
-            {
-                Circle shapeAsCircle = shape as Circle;
-                if (shapeAsCircle != null) {
-                    shapeAsCircle.UpdateFriendlyFire(shapes);
-                }
-            }
+            Shapes.ForEach(shape => shape.Update(Shapes, Width, Height));
 
             foreach(var cellRow in Cells)
             {
                 foreach (var cell in cellRow)
                 {
-                    cell.ToDisplay = shapes.Where(shape => shape.IsIntersecting(cell.X, cell.Y)).Any();
-                    cell.characterWeight = shapes.Average(shape => shape.ShapeOverlap(cell.X, cell.Y)) * 3;
+                    cell.CharacterWeight = Shapes.Max(shape => shape.ShapeOverlapAmount(cell.X, cell.Y));
                 }
             }
         }
@@ -83,21 +76,12 @@ namespace AsciiRenderer
         {
             Width = width;
             Height = height;
-            foreach (var shape in shapes)
-            {
-                shape.UpdateDimmensions(width, height);
-            }
+            Console.CursorVisible = false;
         }
 
         public string ReadRow(List<Cell> cellRow)
         {
-            return new string(cellRow.Select(cell => cell.getValue(IsBackgroundBlack)).ToArray());
-        }
-
-        public static double GenerateVelocity(double max)
-        {
-            var random = new Random();
-            return random.NextDouble() * max;
+            return new string(cellRow.Select(cell => cell.GetCharacter(IsBackgroundBlack)).ToArray());
         }
     }
 }
