@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AsciiRenderer
+﻿namespace AsciiRenderer
 {
-    public class Shape
+    public interface IShape
     {
-        public int X { get; private set; }
-        public int Y { get; private set; }
+        bool IsIntersecting(int cellX, int cellY);
+        void ChooseRandomVelocity();
+        void Move();
     }
 }

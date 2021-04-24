@@ -1,9 +1,24 @@
-﻿namespace AsciiRenderer
+﻿using System;
+
+namespace AsciiRenderer
 {
     public class Cell
     {
-        public int X { get; private set; }
-        public int Y { get; private set; }
-        public char Value { get; private set; }
+        public int X;
+        public int Y;
+        public char Value;
+        public bool ToDisplay;
+
+        public Cell(int x, int y, char value)
+        {
+            X = x;
+            Y = y;
+            Value = value;
+            ToDisplay = true;
+        }
+        public char getValue()
+        {
+            return ToDisplay ? Value : ' ';
+        }
     }
 }

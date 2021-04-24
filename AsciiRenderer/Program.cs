@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+using System.Text;
+using System.Threading;
 
 namespace AsciiRenderer
 {
@@ -6,7 +9,19 @@ namespace AsciiRenderer
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var display = new Display(28, 102);
+            display.CreateCellsBoard();
+            while (true)
+            {
+                GameLoop(display);
+            }
+        }
+
+        public static void GameLoop(Display display)
+        {
+            display.RenderBoard();
+            Thread.Sleep(20);
+            display.UpdateBoard();
         }
     }
 }
