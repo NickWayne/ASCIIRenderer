@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace AsciiRenderer
@@ -9,8 +7,19 @@ namespace AsciiRenderer
     {
         static void Main(string[] args)
         {
-            var display = new Display(28, 102);
+            var random = new Random();
+
+            var height = Console.WindowHeight - 1;
+            var width = Console.WindowWidth - 1;
+
+            var display = new Display(width, height)
+            {
+                IsBackgroundBlack = false
+            };
             display.CreateCellsBoard();
+            display.CreateShapes(6);
+            
+
             while (true)
             {
                 GameLoop(display);
@@ -20,7 +29,7 @@ namespace AsciiRenderer
         public static void GameLoop(Display display)
         {
             display.RenderBoard();
-            Thread.Sleep(20);
+            Thread.Sleep(40);
             display.UpdateBoard();
         }
     }

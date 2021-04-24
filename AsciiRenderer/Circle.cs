@@ -19,10 +19,9 @@ namespace AsciiRenderer
             this.x = x;
             this.y = y;
             this.radius = radius;
-            ChooseRandomVelocity();
         }
 
-        public void Move()
+        public void Update()
         {
             bool toReturn = false;
             if (x + velocityX - radius < 0 || x + velocityX + radius > width)
@@ -48,17 +47,9 @@ namespace AsciiRenderer
             }
         }
 
-        public void ChooseRandomVelocity()
-        {
-            var random = new Random();
-            velocityX = random.NextDouble();
-            velocityY = random.NextDouble();
-        }
-
         public bool IsIntersecting(int cellX, int cellY)
         {
-            return ((cellX - x) * (cellX - x) +
-            (cellY - y) * (cellY - y) <= radius * radius);
+            return (cellX - x) * (cellX - x) + (cellY - y) * (cellY - y) <= radius * radius;
         }
     }
 }
