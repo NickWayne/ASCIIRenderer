@@ -14,7 +14,7 @@ namespace AsciiRenderer
             Console.WindowHeight = height + 1;
             Console.WindowWidth =  width + 1;
             //Console.BackgroundColor = ConsoleColor.Green;
-            //Console.ForegroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Green;
 
             var physicsSettings = new PhysicsSettings(false, false, false);
 
@@ -23,7 +23,7 @@ namespace AsciiRenderer
                 IsBackgroundInverted = false
             };
             display.CreateCellsBoard();
-            display.CreateShapes(10, 5, 1, 1);
+            display.CreateShapes(30, 5, 1, 1);
 
             while (true)
             {
